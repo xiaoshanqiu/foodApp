@@ -51,9 +51,6 @@
 		text-align: center;
 		.star-item{
 			display: inline-block;
-			height: 24px;
-			width: 24px;
-			margin-right: 24px;
 			background-size: cover;
 			&:last-child{
 				margin-right: 0px;
@@ -62,6 +59,10 @@
 
 		&.type24{
 			.star-item{
+				height: 24px;
+				width: 24px;
+				margin-right: 24px;
+
 				&.on{
 					@include bgImage (star24_on);
 				}
@@ -70,6 +71,44 @@
 				}
 				&.off{
 					@include bgImage (star24_off);
+				}
+			}
+		}
+		&.type36{
+			.star-item{
+				height: 14px;
+				width: 14px;
+				margin-right: 5px;
+				&:last-child{
+					margin-right: 0;
+				}
+				&.on{
+					@include bgImage (star36_on);
+				}
+				&.half{
+					@include bgImage (star36_half);
+				}
+				&.off{
+					@include bgImage (star36_off);
+				}
+			}
+		}
+		&.type48{
+			.star-item{
+				height: 10px;
+				width: 10px;
+				margin-right: 4px;
+				&:last-child{
+					margin-right: 0;
+				}
+				&.on{
+					@include bgImage (star48_on);
+				}
+				&.half{
+					@include bgImage (star48_half);
+				}
+				&.off{
+					@include bgImage (star48_off);
 				}
 			}
 		}

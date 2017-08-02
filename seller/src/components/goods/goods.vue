@@ -25,6 +25,9 @@
 								<span class="description">好评率{{food.rating}}%</span>
 								<span class="description">月售{{food.sellCount}}</span>
 								<p class="price">￥{{food.price}}<span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span></p>
+								<div class="control-wrapper">
+									<control :food="food"></control>
+								</div>
 							</span>
 						</li>
 					</ul>
@@ -33,7 +36,7 @@
 		</div>
 
 		<div class="shopcar-wrapper">
-			<shopcar></shopcar>
+			<shopcar :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" :selectFoods="selectFoods"></shopcar>
 		</div>
   </div>
 </template>
@@ -41,11 +44,17 @@
 <script>
 import BScroll from "better-scroll";
 import shopcar from '../shopcar/shopcar.vue';
+import control from '../control/control.vue';
 
 export default {
+	props:{
+		seller:{
+			return:Object
+		}
+	},
 	data(){
 	 	return {
-	 		goods:Array,
+	 		goods:[],
 	 		listHeight:[],
 	 		scrollY:0
 	 	}
@@ -66,12 +75,11 @@ export default {
  				click:true
  			});
  			this.foodScroll = new BScroll(this.$refs.foodWrapper,{
+ 				click:true,
  				probeType:3
  			});
  			this.foodScroll.on('scroll',(pos) => {
  				this.scrollY = Math.abs(Math.floor(pos.y))
- 				console.log(this.scrollY);
- 				     
  			})
  		},
  		_calculateHeight(){
@@ -83,7 +91,6 @@ export default {
  				height += item.clientHeight;
  				this.listHeight.push(height);
  			}
- 			console.log(this.listHeight)
  		},
  		selectMenu(index,event){
  			if(!event._constructed){
@@ -106,10 +113,24 @@ export default {
  				}
  			}
  			return 0;
- 		}
+ 		},
+	 	selectFoods(){
+	 		let foodList = [];
+	 		this.goods.forEach((good) => {
+	 			good.foods.forEach((food) => {
+	 				if(food.count){
+	 					foodList.push(food);
+	 				}
+	 			})
+	 		})
+	 		return foodList;
+	 	}
+ 		
  	},
+
  	components:{
  		shopcar,
+ 		control,
  	}
 }
 </script>
@@ -163,11 +184,9 @@ export default {
 						}
 					}
 				}
-
 			}
 		}
 		.goods-wrapper{
-			// overflow: auto;
 			flex:1;
 			.title{
 				font-size: 12px;
@@ -192,9 +211,9 @@ export default {
 						img{
 							width: 100%;
 						}
-						
 					}
 					.food-name{
+						position: relative;
 						flex:1;
 						overflow: hidden;
 						display: inline-block;
@@ -219,8 +238,12 @@ export default {
 								color: rgb(147,153,159);
 							}
 						}
+						.control-wrapper{
+							position: absolute;
+							bottom: 0;
+							right: 0;
+						}
 					}
-					
 				}
 			}
 		}
