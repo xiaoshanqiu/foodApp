@@ -43,8 +43,8 @@
  		<div class="content-line">
 			<div class="content">
 				<i class="iconfont icon-check_circle"></i>
-				<span>只看有内容的评价</span>
 			</div>
+			<span>只看有内容的评价</span>
  		</div>
 
  		<div class="personal">
@@ -60,9 +60,9 @@
 	 					</div>
 	 					<div class="star-song">
 		 					<div class="star-wrapper">
-			     		 <star :star="seller.score" :size="48">你好</star>
+			     		 <star :star="item.score" :size="48">你好</star>
 				    	</div> 
-			     		<span class="song">40分钟送达</span>
+			     		<span class="song" v-if="item.deliveryTime">{{item.deliveryTime}}分钟送达</span>
 	 					</div>
 	 					<div class="text">{{item.text}}</div>
 	 					<div class="good">
@@ -71,15 +71,19 @@
 	 				</div>
 	 			</li>
 	 		</ul>
- 			
  		</div>
-
+		
+		<div class="shopcar-wrapper">
+      <shopcar :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcar>
+    </div>
  	
   </div>
 </template>
 
 <script>
   import star from '../star/star.vue'
+  import shopcar from '../shopcar/shopcar.vue'
+
 
 export default {
 	data(){
@@ -94,6 +98,7 @@ export default {
 	},
 	 components:{
     star,
+    shopcar,
   },
  	created() {
 	  this.$http.get('/api/ratings').then(response => {
@@ -177,9 +182,9 @@ export default {
 		}
 		.nothing{
 			height: 18px;
-			border-top: 1px solid #ccc;
-			border-bottom: 1px solid #ccc;
-			background-color: #ddd
+			border-top: 1px solid #e6e7e8;
+			border-bottom: 1px solid #e6e7e8;
+			background-color: #f3f5f7;
 		}
 		.satisfaction{
 			padding: 18px 18px 0 18px;
@@ -206,23 +211,25 @@ export default {
 		}
 		.content-line{
 			@include border1px (#ddd);
+			padding: 0 18px;
+			color: #b7bbbf;
 			.content{
-				padding: 0 18px;
-				color: #b7bbbf;
-				line-height: 50px;
+				vertical-align: top;
+				display: inline-block;
 				i{
-					vertical-align: top;
+					line-height: 50px;
 					margin-top: 14px;
 					font-size: 20px;
-					color: #b7bbbf;
 				}
-				span{
-					line-height: 50px;
-				}
+			}
+			span{
+				display: inline-block;
+				line-height: 50px;
 			}
 		}
 		.personal{
 			padding: 0 18px;
+			margin-bottom: 48px;
 			.message{
 				display: flex;
 				padding: 18px 0;
@@ -275,9 +282,21 @@ export default {
 						padding-bottom: 8px;
 						color: rgb(7,17,27);
 					}
+					.good{
+						i{
+							color: #00a0dc;
+						}
+					}
 				}
 			}
 		}
+		.shopcar-wrapper{
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #141d27;
+    }
 	}
 
 

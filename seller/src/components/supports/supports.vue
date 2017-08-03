@@ -100,5 +100,46 @@
 				}
 			}
 		}
+		&.offer{
+			padding: 0 18px;
+			li{
+				padding: 16px 12px 16px 12px;
+				@include border1px (rgba(7,17,27,.1));
+				&:last-child{
+					@include border1px (#fff)
+				}
+			p{
+				display: inline-block;
+				vertical-align: top;
+				margin-left: 6px;
+				line-height: 16px;
+				font-size: 12px;
+				font-weight: 200px;
+				color:rgb(7,17,27);
+			}
+			.icon{
+				display: inline-block;
+				vertical-align: top;
+				height: 16px;
+				width: 16px;
+				background-size: cover;
+				&.decrease{
+					@include bgImage (decrease_1);
+				}
+				&.discount{
+					@include bgImage (discount_1);
+				}
+				&.guarantee{
+					@include bgImage (guarantee_1);
+				}
+				&.invoice{
+					@include bgImage (invoice_1);
+				}
+				&.decrease{
+					@include bgImage (decrease_1);
+				}
+			}
+		}
+		}
 	}
 </style>

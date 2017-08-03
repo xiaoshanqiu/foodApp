@@ -5,7 +5,6 @@
     		<li v-for="(item,index) in goods" class="menu-item" :class="{'current':currentIndex === index}" @click="selectMenu(index,$event)">
 	    	<span class="text border1px">
 	    		<span class="icon special" v-if="item.type > 0" :class="classMap[item.type]" ></span>
-	    		<!-- <span class="icon decrease" v-if="item.type > 0"></span> -->
 	    		{{item.name}}
 	    	</span>
     		</li>
