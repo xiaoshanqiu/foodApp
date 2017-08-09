@@ -10,12 +10,13 @@
     		</li>
     	</ul>
     </div>
+
 		<div class="goods-wrapper" ref="foodWrapper">
 			<ul>
-				<li v-for="item in goods" class="food-list food-list-hook">
+				<li v-for="item in goods" class="food-list food-list-hook" >
 					<h2 class="title">{{item.name}}</h2>
 					<ul>
-						<li v-for="food in item.foods" class="food-style">
+						<li v-for="food in item.foods" class="food-style" @click="choiceFood(food,$event)">
 							<span class="foodImg">
 								<img :src="food.icon" alt="" />
 							</span>
@@ -37,6 +38,10 @@
 		<div class="shopcar-wrapper">
 			<shopcar :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" :selectFoods="selectFoods"></shopcar>
 		</div>
+
+		<div class="food-wrapper">
+			<food :food="chooseFood" ref="food"></food>
+		</div>
   </div>
 </template>
 
@@ -44,6 +49,7 @@
 import BScroll from "better-scroll";
 import shopcar from '../shopcar/shopcar.vue';
 import control from '../control/control.vue';
+import food from '../food/food.vue';
 
 export default {
 	props:{
@@ -55,7 +61,8 @@ export default {
 	 	return {
 	 		goods:[],
 	 		listHeight:[],
-	 		scrollY:0
+	 		scrollY:0,
+	 		chooseFood:{}
 	 	}
   },
  	created() {
@@ -100,6 +107,13 @@ export default {
  			let foodList = this.$refs.foodWrapper.getElementsByClassName('food-list-hook');
  			let ele = foodList[index];
  			this.foodScroll.scrollToElement(ele,300)
+ 		},
+ 		choiceFood(food,event){
+ 			if(!event._constructed){
+ 				return
+ 			}
+ 			this.chooseFood = food;
+ 			this.$refs.food.show();
  		}
  	},
  	computed:{
@@ -130,6 +144,7 @@ export default {
  	components:{
  		shopcar,
  		control,
+ 		food,
  	}
 }
 </script>
@@ -158,7 +173,7 @@ export default {
 					z-index: 10;
 					margin-top: -1;
 					font-weight: 700;
-					background-color: pink;
+					background-color: #fff;
 				}
 				span{
 					line-height: 14px;
@@ -254,6 +269,12 @@ export default {
 			height: 48px;
 			background-color: #141d27;
 		}
+		.food-wrapper{
+			position: fixed;
+			top: 0;
+			left: 0;
+		}
 	}
 
 </style>
+

@@ -3,8 +3,8 @@
     <div class="title-star">
       <div class="line">
         <div class="heart">
-          <i class="iconfont icon-favorite"></i>
-          <span>已收藏</span>
+          <i class="iconfont icon-favorite" @click="showToggle" v-bind:class="{active:isShow}"></i>
+          <span v-text="btnText"></span>
         </div>
         <div class="title">
           <p>{{seller.name}}</p>
@@ -76,7 +76,10 @@
           <li v-for="item in seller.infos">{{item}}</li>
         </ul>
       </div>
-    </div>
+    </div>·
+    
+     
+
 
     <div class="shopcar-wrapper">
       <shopcar :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcar>
@@ -94,7 +97,9 @@
   export default {
     data(){
       return{
-        offer:'offer'
+        offer:'offer',
+        btnText:"收藏",  
+        isShow:false,
       }
     },
     props:{
@@ -124,7 +129,15 @@
             scrollX: true,
           })
         }
-      }
+      },
+      showToggle:function(){  
+        this.isShow = !this.isShow  
+        if(this.isShow){  
+            this.btnText = "已收藏"  
+        }else{  
+            this.btnText = "收藏"  
+        }  
+      } 
     },
   }
 </script>
@@ -151,7 +164,11 @@
             font-size: 24px;
             line-height: 24px;
             margin-bottom: 4px;
+            color: #ccc;
+            &.active{
             color: rgb(240,20,20);
+
+            }
           }
           span{
             line-height: 10px;

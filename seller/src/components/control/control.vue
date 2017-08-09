@@ -2,7 +2,7 @@
 	<div class="control">
 
 		<transition name="move">
-			<div class="remove" v-show="food.count" @click="remove($event)">
+			<div class="remove" v-show="food.count" @click.stop.prevent="remove($event)">
 				<i class="iconfont icon-remove_circle_outline"></i>
 			</div>
 		</transition>
@@ -11,7 +11,7 @@
 			<div class="count" v-show="food.count">{{food.count}}</div>
 		</transition>
 
-		<div class="add" @click="add($event)">
+		<div class="add" @click.stop.prevent="add($event)">
 			<i class="iconfont icon-add_circle"></i>
 		</div>
 	</div>
@@ -25,9 +25,6 @@
 				return:Object
 			}
 		},
-		// created(){
-		// 	console.log(this.food)
-		// },
 		methods:{
 			add(event){
 				if(!event._constructed){
@@ -35,7 +32,6 @@
 				}
 				if(!this.food.count){
 					Vue.set(this.food,'count',1)
-					// this.food.count = 1
 				}else{
 					this.food.count++
 				}

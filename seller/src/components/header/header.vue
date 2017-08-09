@@ -38,8 +38,6 @@
             
             <div class="star-wrapper">
               <star :star="seller.score" :size="24">你好</star>
-              <!-- <star :star="seller.score" :size="36">你好</star> -->
-              <!-- <star :star="seller.score" :size="48">你好</star> -->
             </div>
              
             <div class="title">

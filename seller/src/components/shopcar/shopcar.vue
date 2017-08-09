@@ -1,7 +1,7 @@
 <template>
 	<div class="shopcar">
 		<div class="content">
-			<div class="content-left">
+			<div class="content-left" @click = "toggleList">
 				<div class="logo-wrapper">
 					<div class="logo" :class="{hightlight:totalCount > 0}">
 						<i class="iconfont icon-shopping_cart"></i>
@@ -15,18 +15,52 @@
 			</div>
 
 			<div class="content-right">
-				<!-- {{minPrice}}元起送 -->
 				<div class="pay" :class="{enough:this.totalPrice >= this.minPrice}">
 					{{pay}}
 				</div>
 			</div>
+
+			<transition name="fold">
+				<div class="shop-list" v-show ="listShow">
+					<div class="shop-header">
+							<h1 class="title">购物车</h1>
+							<span class="empty" @click = "empty">清空</span>
+					</div>
+					<div class="shop-content" ref ="listContent">
+							<ul>
+								<li class="food" v-for="food in selectFoods">
+									<span class="name">{{food.name}}</span>
+									<div class="price">
+										<span>{{food.price*food.count}}</span>
+									</div>
+									<div class='control-wrapper'>
+										<control :food='food'></control>
+									</div>
+								</li>
+							</ul>
+					</div>
+				</div>
+			</transition>
 		</div>
+
+		<transition name="fade">
+			<div class="list-mask" v-show="listShow" @click="hideList"></div> 
+		</transition>
 	</div>
 </template>
 
 <script>
+import BScroll from 'better-scroll';
+import control from '../control/control.vue';
+
+
 	export default{
-		 props:{
+			data(){
+				return{
+					fold:true
+				}	
+			},
+		 	props:{
       deliveryPrice:{
         return:Number,
         default:0
@@ -71,8 +105,43 @@
     		}else{
     			return `去结算`
     		}
+    	},
+    	listShow(){
+    		if(!this.totalCount){
+    			return false;
+    		}
+    		let show = !this.fold;
+    		return show
     	}
-    }
+    },
+    methods:{
+    	toggleList(){
+    		if(!this.totalCount){
+    			return
+    		}
+    		this.fold = !this.fold;
+    		this.$nextTick(() => {
+    			if(!this.scroll){
+						this.scroll = new BScroll(this.$refs.listContent,{
+								click:true
+						})						
+					}else{
+						this.scroll.refresh();
+					}
+    		})
+    	},
+    	empty(){
+				this.selectFoods.forEach((item)=>{
+					item.count=0;
+				})
+			},
+			hideList(){
+				this.fold = true
+			}
+    },
+    components:{
+			control,
+		}
 	}
 </script>
 
@@ -163,5 +232,88 @@
 				}
 			}
 		}
+		.fold-enter-active, .fold-leave-active {
+      transition: all .5s;
+    }
+    .fold-enter, .fold-leave-active {
+      transform: translate3D(0,100%,0);;
+      opacity:0;
+    }
+
+		.shop-list{
+			position:absolute;
+			bottom:48px;
+			left:0;
+			z-index:-1;
+			width:100%;
+			.shop-header{
+	      padding: 0 18px;
+	      height: 40px;
+	      line-height:40px;
+	      background: #f3f5f7;
+	      border-bottom: 1px solid rgba(7,17,27,.1);
+	      .title{
+	        float:left;
+	        font-size: 14px;
+	        color: rgb(7,17,27);
+	      }
+	      .empty{
+	        float: right;
+	        font-size: 12px;
+	        color:rgb(0, 160, 220);
+	      }
+	    }
+		}
+
+		.shop-content{
+			padding: 0 18px;
+			max-height:217px;
+			overflow: hidden;
+			background:#fff;
+			.food{
+				position: relative;
+				padding: 12px 0;
+				box-sizing: border-box;
+				@include border1px(rgba(7, 17, 27,.1));
+				.name{
+					line-height:24px;
+					font-size:14px;
+					color:rgb(7,17,27);
+				}
+				.price{
+					position: absolute;
+					right:90px;
+					bottom:12px;
+					line-height: 24px;
+					font-size:14px;
+					font-weight:700;
+					color:rgb(240,20,20);
+					span{
+						padding-right:10px;
+					}
+				}
+				.control-wrapper{
+					position: absolute;
+					right:0;
+					bottom: 6px;
+				}
+			}
+		}
+		.list-mask{
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    z-index: -2;
+	    background:rgba(7,17,27,.6);
+	    background-filter: blur(10px);
+	  }
+	  .fade-enter-active, .fade-leave-active {
+	    transition: all .5s;
+	  }
+	  .fade-enter, .fade-leave-active {
+	    opacity:0;
+	  }
 	}
 </style>
