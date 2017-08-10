@@ -1,108 +1,157 @@
 <template>
-  <div class="ratings">
-  	<div class="no1">
-  		<div class="integrated">
-				<div class="scores">
-	  			<h2>3.9</h2>
-	  			<p>综合评分</p>
-	  			<h6>高于周边商家69.2%</h6>
+  <div class="ratings" ref="ratings">
+  	<div>
+	  	<div class="no1">
+	  		<div class="integrated">
+					<div class="scores">
+		  			<h2>3.9</h2>
+		  			<p>综合评分</p>
+		  			<h6>高于周边商家69.2%</h6>
+					</div>
+	  		</div>
+	  		<div class="grade">
+	  			<div class="attitude">
+	  				<span>服务态度</span>
+	  				<div class="star-wrapper">
+			      <star :star="seller.score" :size="36">你好</star>
+				    </div> 
+				    <span class="num">3.9</span>
+			    </div>
+	  			<div class="attitude">
+	  				<span>商品评分</span>
+	  				<div class="star-wrapper">
+			      <star :star="seller.score" :size="36">你好</star>
+				    </div> 
+				    <span class="num">4.0</span>
+			    </div>
+			    <div class="attitude">
+	  				<span>送达时间</span> 
+	  				<span class="min">44分钟</span>
+			    </div>
+	  		</div>
+	  	</div>
+	 		<div class="nothing"></div>
+
+	 		<div class="satisfaction">
+	 			<ratingSelect :desc="desc" :ratings="ratings" :selectType="selectType" :onlyContent="onlyContent"></ratingSelect>
+	 		</div>
+
+	 		<!-- <div class="content-line">
+				<div class="content">
+					<i class="iconfont icon-check_circle"></i>
 				</div>
-  		</div>
-  		<div class="grade">
-  			<div class="attitude">
-  				<span>服务态度</span>
-  				<div class="star-wrapper">
-		      <star :star="seller.score" :size="36">你好</star>
-			    </div> 
-			    <span class="num">3.9</span>
-		    </div>
-  			<div class="attitude">
-  				<span>服务态度</span>
-  				<div class="star-wrapper">
-		      <star :star="seller.score" :size="36">你好</star>
-			    </div> 
-			    <span class="num">4.0</span>
-		    </div>
-		    <div class="attitude">
-  				<span>送达时间</span> 
-  				<span class="min">44分钟</span>
-		    </div>
-  		</div>
-  	</div>
- 
- 		<div class="nothing"></div>
+				<span>只看有内容的评价</span>
+	 		</div> -->
 
- 		<div class="satisfaction">
- 			<div class="satis">
-	 			<span>全部57</span>
-	 			<span class="green">满意47</span>
-	 			<span class="gray">不满意57</span>
- 			</div>
+	 		<div class="personal">
+		 		<ul>
+		 			<li class="message" v-for="item in ratings" v-show="needshow(item.rateType,item.text)">
+		 				<div class="photo">
+		 					<img :src="item.avatar" alt="" />
+		 				</div>
+		 				<div class="message-cont">
+		 					<div class="name-time">
+		 						<span>{{item.username}}</span>
+		 						<span class="time">{{formate(item.rateTime)}}</span>
+		 					</div>
+		 					<div class="star-song">
+			 					<div class="star-wrapper">
+				     		 <star :star="item.score" :size="48">你好</star>
+					    	</div> 
+				     		<span class="song" v-if="item.deliveryTime">{{item.deliveryTime}}分钟送达</span>
+		 					</div>
+		 					<div class="text">{{item.text}}</div>
+		 					<div class="good" >
+		 						<i :class="{'icon-thumb_up':item.rateType===0,'icon-thumb_down': item.rateType===1}"></i>
+		 						<!-- <i class="iconfont icon-thumb_up"></i> -->
+		 						<!-- <i class="iconfont icon-thumb_down"></i> -->
+		 					</div>
+		 				</div>
+		 			</li>
+		 		</ul>
+	 		</div>
+			
  		</div>
-
- 		<div class="content-line">
-			<div class="content">
-				<i class="iconfont icon-check_circle"></i>
-			</div>
-			<span>只看有内容的评价</span>
- 		</div>
-
- 		<div class="personal">
-	 		<ul>
-	 			<li class="message" v-for="item in ratings">
-	 				<div class="photo">
-	 					<img :src="item.avatar" alt="" />
-	 				</div>
-	 				<div class="message-cont">
-	 					<div class="name-time">
-	 						<span>{{item.username}}</span>
-	 						<span class="time">2017-08-02 20:00</span>
-	 					</div>
-	 					<div class="star-song">
-		 					<div class="star-wrapper">
-			     		 <star :star="item.score" :size="48">你好</star>
-				    	</div> 
-			     		<span class="song" v-if="item.deliveryTime">{{item.deliveryTime}}分钟送达</span>
-	 					</div>
-	 					<div class="text">{{item.text}}</div>
-	 					<div class="good">
-	 						<i class="iconfont icon-thumb_up"></i>
-	 					</div>
-	 				</div>
-	 			</li>
-	 		</ul>
- 		</div>
-		
 		<div class="shopcar-wrapper">
       <shopcar :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcar>
     </div>
- 	
   </div>
 </template>
 
 <script>
+	import BScroll from "better-scroll";
   import star from '../star/star.vue'
   import shopcar from '../shopcar/shopcar.vue'
+	import ratingSelect from '../ratingSelect/ratingSelect.vue';
+
 
 
 export default {
 	data(){
 		return {
-			ratings:[]
+			ratings:[],
+			selectType:2,
+			onlyContent:false,
+			desc:{
+				all:'全部',
+				positive:'满意',
+				negative:'不满意'
+			}
 		}
 	},
+	methods:{
+		needshow(type,text){
+			if(this.onlyContent && !text){
+				return false;
+			}
+			if(this.selectType == 2){
+				return true
+			}else{
+				return type === this.selectType;
+			}
+		},
+		formate(date){
+		  var date = new Date(date);//如果date为13位不需要乘1000
+		  var Y = date.getFullYear() + '-';
+		  var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		  var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+		  var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+		  var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+		  var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+		  return Y+M+D+h+m+s;
+		}
+	},
+	watch:{
+		'selectType'(type){
+			this.$nextTick(() => {
+				this.scroll.refresh();
+			})
+		},
+		'onlyContent'(onlyContent){
+			this.$nextTick(() => {
+				this.scroll.refresh();
+			})
+		}
+	},
+
 	props:{
 		seller:{
 			return:Object
 		}
 	},
-	 components:{
+	components:{
     star,
     shopcar,
+    ratingSelect,
   },
  	created() {
 	  this.$http.get('/api/ratings').then(response => {
 	    this.ratings = response.body.data;
+	    this.$nextTick(() => {
+	    	this.scroll = new BScroll(this.$refs.ratings,{
+	    		click:true
+	    	})
+	    })
 	  })
   }
 }
@@ -113,6 +162,11 @@ export default {
   @import '../../common/mixin.scss';
 
 	.ratings{
+		width: 100%;
+		position: fixed;
+		top: 184px;
+		bottom: 0;
+		overflow: hidden;
 		.no1{
 			display: flex;
 			.integrated{
@@ -188,6 +242,7 @@ export default {
 		}
 		.satisfaction{
 			padding: 18px 18px 0 18px;
+			@include border1px (#ddd);
 			.satis{
 				padding-bottom: 18px;
 				@include border1px (#ddd)
@@ -286,6 +341,9 @@ export default {
 						i{
 							color: #00a0dc;
 						}
+						.icon-thumb_down{
+	            color: rgb(147,153,159);
+	          }
 					}
 				}
 			}

@@ -1,86 +1,84 @@
 <template>
-  <div class="seller">
-    <div class="title-star">
-      <div class="line">
-        <div class="heart">
-          <i class="iconfont icon-favorite" @click="showToggle" v-bind:class="{active:isShow}"></i>
-          <span v-text="btnText"></span>
+  <div class="seller" >
+    <div>
+      <div class="title-star">
+        <div class="line">
+          <div class="heart">
+            <i class="iconfont icon-favorite" @click="showToggle" v-bind:class="{active:isShow}"></i>
+            <span v-text="btnText"></span>
+          </div>
+          <div class="title">
+            <p>{{seller.name}}</p>
+          </div>
+          <div class="star-sell">
+            <div class="star-wrapper">
+             <star :star="seller.foodScore" :size="36"></star>
+            </div> 
+            <div class="rank-month">
+              <span class="rank">({{seller.rankRate}})</span>
+              <span class="month">月售{{seller.sellCount}}单</span>
+            </div>
+          </div>
         </div>
-        <div class="title">
-          <p>{{seller.name}}</p>
-        </div>
-        <div class="star-sell">
-          <div class="star-wrapper">
-           <star :star="seller.foodScore" :size="36"></star>
-          </div> 
-          <div class="rank-month">
-            <span class="rank">({{seller.rankRate}})</span>
-            <span class="month">月售{{seller.sellCount}}单</span>
+        <div class="price">
+          <div class="message">
+            <p>起送价</p>
+            <span class="money">{{seller.minPrice}}</span>
+            <span class="yuan">元</span>
+          </div>
+          <div class="message">
+            <p>商家配送</p>
+            <span class="money">{{seller.deliveryPrice}}</span>
+            <span class="yuan">元</span>
+          </div>
+          <div class="message">
+            <p>平均配送时间</p>
+            <span class="money">{{seller.deliveryTime}}</span>
+            <span class="yuan">分钟</span>
           </div>
         </div>
       </div>
-      <div class="price">
-        <div class="message">
-          <p>起送价</p>
-          <span class="money">{{seller.minPrice}}</span>
-          <span class="yuan">元</span>
-        </div>
-        <div class="message">
-          <p>商家配送</p>
-          <span class="money">{{seller.deliveryPrice}}</span>
-          <span class="yuan">元</span>
-        </div>
-        <div class="message">
-          <p>平均配送时间</p>
-          <span class="money">{{seller.deliveryTime}}</span>
-          <span class="yuan">分钟</span>
-        </div>
-      </div>
-    </div>
 
-    <div class="nothing"></div>
-  
-    <div class="activity">
-      <div class="activity-content">
-        <p class="title">公告与活动</p>
-        <div class="content">
-          {{seller.bulletin}}
-        </div>
-      </div>
-    </div>
+      <div class="nothing"></div>
     
-    <div class="supports-wrapper">
-      <supports v-if="seller.supports" :supports="seller.supports" :className="offer"></supports>
-    </div>
+      <div class="activity">
+        <div class="activity-content">
+          <p class="title">公告与活动</p>
+          <div class="content">
+            {{seller.bulletin}}
+          </div>
+        </div>
+      </div>
+      
+      <div class="supports-wrapper">
+        <supports v-if="seller.supports" :supports="seller.supports" :className="offer"></supports>
+      </div>
 
-    <div class="nothing"></div>
+      <div class="nothing"></div>
 
-    <div class="scene">
-      <p class="title-scene">商家实景</p>
-      <div class="pic-scene" ref="picWrapper">
-        <ul ref="picWidth">
-          <li v-for="(item,index) in seller.pics">
-           <img :src="seller.pics[index]" alt="" />
-          </li>
-        </ul>
+      <div class="scene">
+        <p class="title-scene">商家实景</p>
+        <div class="pic-scene" ref="picWrapper">
+          <ul ref="picWidth">
+            <li v-for="(item,index) in seller.pics">
+             <img :src="seller.pics[index]" alt="" />
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="nothing"></div>
+
+      <div class="business">
+        <p class="title-business">商家信息</p>
+        <div class="content-business">
+          <ul>
+            <li v-for="item in seller.infos">{{item}}</li>
+          </ul>
+        </div>
       </div>
 
     </div>
-    
-    <div class="nothing"></div>
-
-    <div class="business">
-      <p class="title-business">商家信息</p>
-      <div class="content-business">
-        <ul>
-          <li v-for="item in seller.infos">{{item}}</li>
-        </ul>
-      </div>
-    </div>·
-    
-     
-
-
     <div class="shopcar-wrapper">
       <shopcar :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcar>
     </div>
@@ -128,6 +126,7 @@
           this.picScroll = new BScroll(this.$refs.picWrapper,{
             scrollX: true,
           })
+          
         }
       },
       showToggle:function(){  
@@ -137,7 +136,7 @@
         }else{  
             this.btnText = "收藏"  
         }  
-      } 
+      },
     },
   }
 </script>

@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import BScroll from 'better-scroll';
-import control from '../control/control.vue';
+	import BScroll from 'better-scroll';
+	import control from '../control/control.vue';
 
 
 	export default{
@@ -61,76 +61,76 @@ import control from '../control/control.vue';
 				}	
 			},
 		 	props:{
-      deliveryPrice:{
-        return:Number,
-        default:0
-      },
-      minPrice:{
-      	return:Number,
-      	default:0
-      },
-      selectFoods:{
-      	return:Array,
-      	default(){
-      		return [
-      			{
-      				price:10,
-      				count:0
-      			}
-      		]
-      	}
-      }
-    },
-    computed:{
-    	totalPrice(){
-    		let price = 0;
-    		this.selectFoods.forEach((goods) => {
-    			price += goods.price * goods.count
-    		})
-    		return price
-    	},
-    	totalCount(){
-    		let count = 0;
-    		this.selectFoods.forEach((goods) => {
-    			count += goods.count
-    		})
-    		return count
-    	},
-    	pay(){
-    		if(this.totalPrice === 0){
-    			return `最低配￥${this.minPrice}元`
-    		}else if(this.totalPrice < this.minPrice){
-    			let diff = this.minPrice - this.totalPrice;
-    			return `还差￥${diff}元`
-    		}else{
-    			return `去结算`
-    		}
-    	},
-    	listShow(){
-    		if(!this.totalCount){
-    			return false;
-    		}
-    		let show = !this.fold;
-    		return show
-    	}
-    },
-    methods:{
-    	toggleList(){
-    		if(!this.totalCount){
-    			return
-    		}
-    		this.fold = !this.fold;
-    		this.$nextTick(() => {
-    			if(!this.scroll){
+	    deliveryPrice:{
+	      return:Number,
+	      default:0
+	    },
+	    minPrice:{
+	    	return:Number,
+	    	default:0
+	    },
+	    selectFoods:{
+	    	return:Array,
+	    	default(){
+	    		return [
+	    			{
+	    				price:10,
+	    				count:0
+	    			}
+	    		]
+	    	}
+	    }
+	  },
+	  computed:{
+	  	totalPrice(){
+	  		let price = 0;
+	  		this.selectFoods.forEach((goods) => {
+	  			price += goods.price * goods.count
+	  		})
+	  		return price
+	  	},
+	  	totalCount(){
+	  		let count = 0;
+	  		this.selectFoods.forEach((goods) => {
+	  			count += goods.count
+	  		})
+	  		return count
+	  	},
+	  	pay(){
+	  		if(this.totalPrice === 0){
+	  			return `最低配￥${this.minPrice}元`
+	  		}else if(this.totalPrice < this.minPrice){
+	  			let diff = this.minPrice - this.totalPrice;
+	  			return `还差￥${diff}元`
+	  		}else{
+	  			return `去结算`
+	  		}
+	  	},
+	  	listShow(){
+	  		if(!this.totalCount){
+	  			return false;
+	  		}
+	  		let show = !this.fold;
+	  		return show
+	  	}
+	  },
+	  methods:{
+	  	toggleList(){
+	  		if(!this.totalCount){
+	  			return
+	  		}
+	  		this.fold = !this.fold;
+	  		this.$nextTick(() => {
+	  			if(!this.scroll){
 						this.scroll = new BScroll(this.$refs.listContent,{
 								click:true
 						})						
 					}else{
 						this.scroll.refresh();
 					}
-    		})
-    	},
-    	empty(){
+	  		})
+	  	},
+	  	empty(){
 				this.selectFoods.forEach((item)=>{
 					item.count=0;
 				})
@@ -138,15 +138,14 @@ import control from '../control/control.vue';
 			hideList(){
 				this.fold = true
 			}
-    },
-    components:{
+	  },
+	  components:{
 			control,
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-
   @import '../../common/mixin.scss';
 
 	.shopcar{
@@ -239,7 +238,6 @@ import control from '../control/control.vue';
       transform: translate3D(0,100%,0);;
       opacity:0;
     }
-
 		.shop-list{
 			position:absolute;
 			bottom:48px;
@@ -264,7 +262,6 @@ import control from '../control/control.vue';
 	      }
 	    }
 		}
-
 		.shop-content{
 			padding: 0 18px;
 			max-height:217px;

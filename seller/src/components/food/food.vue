@@ -21,9 +21,10 @@
 					<span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
 				</div>
 
-			<!-- 	<div class="cartcontrol-wrapper">
-					<cartcontrol :food="food"></cartcontrol>
-				</div> -->
+				<div class="control-wrapper">
+					<control :food="food"></control>
+				</div>
+
 				<transition name="fade">
 					<div @click="addFirst($event)" class="buy" v-show="!food.count || food-count === 0 ">
 						加入购物车
@@ -62,6 +63,10 @@
 	      <div class="no-rating" v-show="!food.ratings || !food.ratings.length">暂无评价</div>
 	    </div>
 		</div>
+
+		<div class="shopcar-wrapper">
+      <shopcar :deliveryPrice="food.deliveryPrice" :minPrice="food.minPrice"></shopcar>
+    </div>
 	</div>
 </template>
 
@@ -70,7 +75,7 @@
 	import control from '../control/control.vue';
 	import Vue from 'vue';
 	import ratingSelect from '../ratingSelect/ratingSelect.vue';
-
+  import shopcar from '../shopcar/shopcar.vue';
 
 	export default{
 		data(){
@@ -78,7 +83,6 @@
 				showFlag:false,
 				ratings:[],
 				selectType:2,
-
 				onlyContent:false,
 				desc:{
 					all:'全部',
@@ -152,6 +156,7 @@
 		components:{
 	 		control,
 	 		ratingSelect,
+    	shopcar,
 	 	}
 	}
 </script>
@@ -179,11 +184,17 @@
 				}
 				.back{
 					position: absolute;
-					left: 0;
-					top: 0;
-					background-color: rgba(7,17,27,.5);
+					left: 5px;
+					top: 5px;
+					height: 35px;
+					width: 35px;
+					border-radius: 50%;
+					color: #ccc;
+					text-align: center;
+					background-color: rgba(7,17,27,.3);
 					i{
 						font-size: 25px;
+						line-height: 35px;
 					}
 				}
 			}
@@ -226,6 +237,11 @@
 				text-align: center;
 				color: rgb(255,255,255);
 				background-color: rgb(0,160,220);
+			}
+			.control-wrapper{
+				position: absolute;
+				right: 22px;
+				bottom: 15px; 
 			}
 		}
 		.nothing{
@@ -310,6 +326,13 @@
       padding: 16px 0;
       font-size: 12px;
       color:rgb(147, 153, 159);
+    }
+    .shopcar-wrapper{
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #141d27;
     }
 	}
 

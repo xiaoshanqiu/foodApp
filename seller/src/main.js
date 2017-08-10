@@ -17,6 +17,7 @@ import ratings from './components/ratings/ratings.vue'
 Vue.config.productionTip = false
 
 const routes = [
+  { path: '/', redirect: '/goods' },
   { path: '/seller', component: seller },
   { path: '/goods', component: goods },
   { path: '/ratings', component: ratings }
@@ -34,4 +35,4 @@ new Vue({
   router,
   template: '<App/>',
   components: { App }
-})
+}).$mount('#app')
