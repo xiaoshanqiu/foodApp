@@ -66,7 +66,7 @@ export default {
 	 	}
   },
  	created() {
-    this.$http.get('/api/goods').then(response => {
+    this.$http.get('api/goods').then(response => {
       this.goods = response.body.data;
       this.$nextTick(() => {
       	this._initScroll();

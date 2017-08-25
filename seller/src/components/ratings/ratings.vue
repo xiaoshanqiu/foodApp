@@ -145,7 +145,7 @@ export default {
     ratingSelect,
   },
  	created() {
-	  this.$http.get('/api/ratings').then(response => {
+	  this.$http.get('api/ratings').then(response => {
 	    this.ratings = response.body.data;
 	    this.$nextTick(() => {
 	    	this.scroll = new BScroll(this.$refs.ratings,{
