@@ -1,5 +1,6 @@
 # foodApp
-外卖
+外卖!
 
 
-![](https://github.com/xiaoshanqiu/foodApp/blob/master/GIF.gif?raw=true)
+
+![](https://raw.githubusercontent.com/xiaoshanqiu/foodApp/master/GIF.gif)
